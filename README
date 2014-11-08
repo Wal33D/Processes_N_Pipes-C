@@ -6,40 +6,36 @@
 * Submitted: <10/12/14>
 /********************************************************************************************
  
-    Usage example:(./thisProgram hello) or (./this "Hello My name is Waleed Gudah")
-    Please use " ", for messages longer than 1 word
+Usage example:(./thisProgram hello) or (./this "Hello My name is Waleed Gudah")
+Please use " ", for messages longer than 1 word
     
-    Demo {
+Demo {
+	
+	waleed@Waleed-Ubuntu:~/Desktop/AS2 OS$ gcc Assignment2WaleedGudah -o A2
+	waleed@Waleed-Ubuntu:~/Desktop/AS2 OS$ ./A2 "Hi There!"
 
+		Parent(7749): Sending [Hi There!] to Child
 
-		waleed@Waleed-Ubuntu:~/Desktop/AS2 OS$ gcc Assignment2WaleedGudah -o A2
-		waleed@Waleed-Ubuntu:~/Desktop/AS2 OS$ ./A2 "Hi There!"
+		Child(7750): Recieved Message
 
-			Parent(7749): Sending [Hi There!] to Child
+		Child(7750): Toggling Case and Sending to Parent
 
-			Child(7750): Recieved Message
+		Parent(7749): Received [hI tHERE!] from Child
 
-			Child(7750): Toggling Case and Sending to Parent
-
-			Parent(7749): Received [hI tHERE!] from Child
-
-		waleed@Waleed-Ubuntu:~/Desktop/Link to Shared Folder/AS2 OS$ 
+	waleed@Waleed-Ubuntu:~/Desktop/Link to Shared Folder/AS2 OS$ 
 
     }
 
-
 Requirments {
 	
-
-	Design a program using ordinary pipes in which one process sends a string message to a second process, and the second
-	process reverses the case of each character (lower to upper, upper to lower) in the received message, and sends the
-	reverse-case message to the first process. For example, if the first process sends the message “Hi There” the second
-	process will reply it with “hI tHERE”.
-	The program requires using two pipes: one for sending the original message from Process 1 to Process 2, and the other
+	Design a program using ordinary pipes in which one process sends 
+	a string message to a second process, and the second process reverses 
+	the case of each character (lower to upper, upper to lower) in the 
+	received message, and sends the reverse-case message to the first process. 
+	For example, if the first process sends the message “Hi There” the second
+	process will reply it with “hI tHERE”. The program requires using two pipes: 
+	one for sending the original message from Process 1 to Process 2, and the other
 	for sending the reverse-case message from Process 2 to Process 1.
-	Remember about the proper programming style (it will be graded!), including comments, indentation, use of blank lines,
-	etc. Also, provide a README file explaining how to compile and run your file.
-
 
 }
 
