@@ -1,5 +1,5 @@
 #include "utilities.h"
-#include "utilities.c"
+
 void childProcess(int fd[]) {
     // Close unused ends of the pipes
     close(fd[PARENT_READ]);

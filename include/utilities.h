@@ -30,7 +30,8 @@ char *toggleString(const char *input);
 int inputValidation(int argc, char *argv[]);
 void childProcess(int fd[]);
 void parentProcess(int fd[], char *message);
-void *createPalindrome(const char *word); 
+char *createPalindrome(const char *word);
+char *uppercaseOperation(const char *input);
 
 typedef char *(*StringOperation)(const char *input);
 
