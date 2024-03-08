@@ -1,26 +1,29 @@
-# 🔄 Processes-N-Pipes: Case Inversion IPC Demo
+# 🔄 Processes-N-Pipes: Enhanced IPC Demo with Delays
 
-Welcome to **Processes-N-Pipes**, an educational and entertaining exploration into the realms of inter-process communication (IPC) using ordinary pipes. This specialized toolkit demonstrates a simple yet intriguing use case: sending a string message between two processes where the receiving process inversely cases each character and sends it back. Perfect for learners and educators, this project simplifies understanding IPC through a fun, interactive example.
+Welcome to **Processes-N-Pipes**, an advanced exploration into the realms of inter-process communication (IPC) using pipes, now featuring a user-friendly terminal menu and customizable communication delays. This toolkit extends our initial case inversion example to include a variety of operations and demonstrates the effect of delays in IPC, making it a comprehensive educational tool for learners and educators alike.
 
 ## 🎯 Core Functionality
 
-- **Case Inversion via Pipes**: Discover the power of pipes in IPC by sending a message from one process to another, which then inversely cases each character and replies back.
-- **Two-Way Communication**: Utilizes two pipes, one for each direction of communication, to showcase how messages can flow between processes efficiently.
-- **Educational Tool**: Designed as a learning aid to demonstrate IPC mechanics in a clear, engaging manner.
+- **Extended IPC Operations**: Engage with a broader range of operations beyond case inversion, including uppercase transformation, palindrome creation, and random math operations on numbers.
+- **Terminal Menu**: Navigate through the options easily with a simple-to-use terminal menu, enhancing user interaction.
+- **Communication Delays**: Experience the impact of timing in IPC with deliberate delays introduced between parent and child processes, simulating real-world scenarios where processes operate at different speeds.
+- **Educational Tool**: With these new features, delve deeper into IPC mechanics in a clear, engaging manner, perfect for those looking to enhance their understanding of process communication.
 
 ## 🛠 Getting Started
 
 ### Prerequisites
 
 Prepare for this IPC journey with:
+
 - A GCC compiler or any standard C compiler.
 - Basic terminal operations.
 
 ### Installation & Compilation
 
-Ensure your project directory is structured with `main.c` and `utilities.c` inside the `/src` folder, and `utilities.h` inside the `/include` folder.
+Ensure your project directory is structured properly with `main.c` and `utilities.c` inside the `/src` folder, and `utilities.h` inside the `/include` folder.
 
 1. **Clone this repository**:
+
     \`\`\`bash
     git clone https://github.com/your-username/Processes-N-Pipes.git
     \`\`\`
@@ -34,31 +37,28 @@ Ensure your project directory is structured with `main.c` and `utilities.c` insi
     \`\`\`bash
     make
     \`\`\`
-This will compile the source files from the `/src` directory and place the executable in the `/bin` directory as defined in the Makefile.
+
+This will compile the source files from the `/src` directory and place the executable in the `/build` directory as defined in the Makefile.
 
 ## 📘 How to Play
 
-After compiling, simply run the executable with a message as an argument to see the case inversion process in action:
+After compiling, run the executable to access the terminal menu:
 
-\`\`\`bash
-./bin/myprogram "Hi There!"
-\`\`\`
+./build/processes-n-pipes
 
-You'll observe that the message sent to the second process comes back with each of its character's case inverted, for example, "Hi There!" becomes "hI tHERE!".
 
-## 🌟 Demonstration
+Follow the on-screen prompts to choose between various IPC demonstrations. When prompted, enter a message or a number based on your selection. Explore different functionalities and observe the impact of communication delays firsthand.
 
-This project illustrates the essential principles of IPC using a straightforward case inversion example:
+## 🌟 New Demonstrations & Features
 
-- **Process 1 (Parent)** sends "Hi There!" to **Process 2 (Child)**.
-- **Process 2 (Child)** receives the message, inverts the case, and sends "hI tHERE!" back to **Process 1 (Parent)**.
+This version introduces a terminal menu that allows users to select between different demonstrations:
 
-- ### Has been updated, terminal menu for demonstration added
-### Dive Into the Mechanics
+- **Toggle and Return a Message**: Inverts the case of each character in a string.
+- **Uppercase and Return a Message**: Converts a string to uppercase.
+- **Palindrome and Return a Message**: Creates a palindrome from the input string.
+- **Perform a Random Math Operation on a Number**: Executes a random math operation on a provided number.
 
-The program employs two pipes:
-- One for transmitting the original message from Process 1 to Process 2.
-- Another for delivering the case-inverted message from Process 2 back to Process 1.
+Additionally, the introduction of a 3-second delay between parent and child communications offers insights into how processes interact with timing considerations.
 
 ## 💡 Contribute & Learn
 
@@ -66,10 +66,10 @@ Dive into the Processes-N-Pipes project! Your contributions, whether they're new
 
 ## 📜 License
 
-Distributed under the MIT License. See \`LICENSE\` for more information.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 🤝 Support & Questions
 
 Encountered a challenge? Have a question? Open an issue on our GitHub issue tracker for support and guidance.
 
-**Embark on your IPC learning journey with Processes-N-Pipes and enjoy the adventure of communication between processes!**
+**Embark on your IPC learning journey with Processes-N-Pipes and enjoy the advanced adventure of communication between processes!**

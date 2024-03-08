@@ -10,10 +10,10 @@ void parentProcess(int fd[], char *message, int choice)
     switch (choice)
     {
     case 1:
-        printf(COLOR_GREEN "Parent whispers: " COLOR_RESET "Hey sweetie, can you " COLOR_YELLOW "toggle" COLOR_RESET " this for me? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
+        printf(COLOR_GREEN "Parent whispers: " COLOR_RESET "Hey Kiddo, can you " COLOR_YELLOW "toggle" COLOR_RESET " this for me? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
         break;
     case 2:
-        printf(COLOR_GREEN "Parent muses: " COLOR_RESET "Darling, could you please " COLOR_YELLOW "shout" COLOR_RESET " this out loud? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
+        printf(COLOR_GREEN "Parent muses: " COLOR_RESET "Hey Kiddo, could you please " COLOR_YELLOW "shout" COLOR_RESET " this out loud? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
         break;
     case 3:
         printf(COLOR_GREEN "Parent ponders: " COLOR_RESET "Oh, what if we made this " COLOR_YELLOW "mirror" COLOR_RESET " itself? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
@@ -29,7 +29,7 @@ void parentProcess(int fd[], char *message, int choice)
         printf(COLOR_GREEN "Parent is confused: " COLOR_RESET "Hmm, not sure what you want, but let's try '" COLOR_WHITE "%s" COLOR_RESET "' anyway.\n", message);
         break;
     }
-        sleep(3);
+    sleep(3);
 
     // Send the operation code to the child
     fprintf(stderr, COLOR_WHITE "Parent: " COLOR_RESET "Sending Message to Child Process...\n");
