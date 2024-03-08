@@ -1,6 +1,4 @@
 #include "utilities.h"
-#include <stdlib.h> // For random number operations
-#include <time.h>   // For seeding the random number generator
 
 void childProcess(int fd[], int choice) {
     // Close unused ends of the pipes

@@ -10,6 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <time.h>   
 
 // Definitions for pipe indices and the number of pipe pairs
 #define CHILD_READ 2

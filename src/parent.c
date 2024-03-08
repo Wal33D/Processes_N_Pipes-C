@@ -19,7 +19,11 @@ void parentProcess(int fd[], char *message, int choice)
         printf(COLOR_GREEN "Parent ponders: " COLOR_RESET "Oh, what if we made this " COLOR_YELLOW "mirror" COLOR_RESET " itself? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
         break;
     case 4:
-
+        // Correctly interpret the message as a pointer to an integer
+        int *pNumber = (int *)message;
+        printf(COLOR_GREEN "Parent quizzes: " COLOR_RESET "I wonder how we can play with the number " COLOR_YELLOW "%d" COLOR_RESET " today?\n", *pNumber);
+        // Then send the number to the child
+        write(fd[PARENT_WRITE], pNumber, sizeof(int));
         break;
     default:
         printf(COLOR_GREEN "Parent is confused: " COLOR_RESET "Hmm, not sure what you want, but let's try '" COLOR_WHITE "%s" COLOR_RESET "' anyway.\n", message);
@@ -33,16 +37,8 @@ void parentProcess(int fd[], char *message, int choice)
         exit(EXIT_FAILURE);
     }
 
-    if (choice == 4)
-    {
-        // Correctly interpret the message as a pointer to an integer
-        int *pNumber = (int *)message;
-        printf(COLOR_GREEN "Parent quizzes: " COLOR_RESET "I wonder how we can play with the number " COLOR_YELLOW "%d" COLOR_RESET " today?\n", *pNumber);
-        // Then send the number to the child
-        write(fd[PARENT_WRITE], pNumber, sizeof(int));
-    }
-    else
-    {
+    if (choice != 4)
+ {
         // Send the message for string operations
         if (write(fd[PARENT_WRITE], message, strlen(message) + 1) != strlen(message) + 1)
         {
