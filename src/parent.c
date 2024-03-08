@@ -38,7 +38,7 @@ void parentProcess(int fd[], char *message, int choice)
     }
 
     if (choice != 4)
- {
+    {
         // Send the message for string operations
         if (write(fd[PARENT_WRITE], message, strlen(message) + 1) != strlen(message) + 1)
         {
@@ -48,10 +48,12 @@ void parentProcess(int fd[], char *message, int choice)
     }
 
     // Wait for and display the modified message or result from the child
+    char buffer[1024];
+    int length;
     if (choice == 4)
     {
         int result;
-        if (read(fd[PARENT_READ], &result, sizeof(result)) < 0)
+        if ((length = read(fd[PARENT_READ], &result, sizeof(result))) < 0)
         {
             fprintf(stderr, COLOR_WHITE "Parent frets: " COLOR_RESET "Gosh, I never heard back. Are they ignoring me?\n");
             exit(EXIT_FAILURE);
@@ -60,17 +62,29 @@ void parentProcess(int fd[], char *message, int choice)
     }
     else
     {
-        char buffer[1024];
-        int length = read(fd[PARENT_READ], buffer, sizeof(buffer));
-        if (length < 0)
+        if ((length = read(fd[PARENT_READ], buffer, sizeof(buffer) - 1)) < 0)
         {
             fprintf(stderr, COLOR_WHITE "Parent frets: " COLOR_RESET "Gosh, I never heard back. Are they ignoring me?\n");
             exit(EXIT_FAILURE);
         }
-        buffer[length] = '\0';
+        buffer[length] = '\0'; // Null-terminate the string
         printf(COLOR_GREEN "Parent beams proudly: " COLOR_RESET "Oh, look at what my clever child did! --> '" COLOR_YELLOW "%s" COLOR_RESET "'\n", buffer);
     }
 
+    // Send a thank you message to the child for the interaction
+    char thankYouMsg[] = "Thanks for talking, kiddo!";
+    write(fd[PARENT_WRITE], thankYouMsg, sizeof(thankYouMsg));
+
+    // Wait for the child's final response to the thank you message
+    if ((length = read(fd[PARENT_READ], buffer, sizeof(buffer) - 1)) < 0)
+    {
+        fprintf(stderr, COLOR_WHITE "Parent frets: " COLOR_RESET "Seems I can't hear back from my child.\n");
+        exit(EXIT_FAILURE);
+    }
+    buffer[length] = '\0'; // Null-terminate the string
+    printf(COLOR_GREEN "Parent smiles warmly: " COLOR_RESET "%s\n", buffer);
+
+    // Finalization
     close(fd[PARENT_READ]);
     close(fd[PARENT_WRITE]);
     wait(NULL); // Wait for the child process to terminate
