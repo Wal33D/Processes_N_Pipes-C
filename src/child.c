@@ -18,7 +18,7 @@ void childProcess(int fd[]) {
     }
     childMessage[length] = '\0'; // Ensure null-termination
 
-    printf("\x1b[36mChild Process: Received '%s'\x1b[0m\n", childMessage);
+    printf("\x1b[36mChild Process: Received '\x1b[37m%s\x1b[36m'\x1b[0m\n", childMessage);
     if (write(fd[CHILD_WRITE], toggleString(childMessage), strlen(childMessage)) < 0) {
         fprintf(stderr, "\x1b[37mChild write failed\x1b[0m\n");
         exit(EXIT_FAILURE);

@@ -11,7 +11,7 @@
 #define CHILD_WRITE  1
 #define CHILD_READ   2
 #define PARENT_WRITE 3
-
+#define PIPE_PAIRS 2
 // Function declarations updated
 char *toggleString(const char *input); // Updated parameter to const char*
 int inputValidation(int argc, char *argv[]);

@@ -1,7 +1,4 @@
-#include <stdio.h>
 #include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
 #include <sys/wait.h>
 #include "utilities.h"
 
@@ -12,7 +9,7 @@ void parentProcess(int fd[], char *message) {
     close(fd[CHILD_READ]);
     close(fd[CHILD_WRITE]);
 
-    printf("\x1b[33mParent Process: Sending '%s' to Child\x1b[0m\n", message);
+    printf("\x1b[33mParent Process: Sending '\x1b[37m%s\x1b[33m' to Child\x1b[0m\n", message);
     if (write(fd[PARENT_WRITE], message, strlen(message)) != strlen(message)) {
         fprintf(stderr, "\x1b[37mParent write failed\x1b[0m\n");
         exit(EXIT_FAILURE);
@@ -25,8 +22,8 @@ void parentProcess(int fd[], char *message) {
     }
     parentMessage[length] = '\0'; // Ensure null-termination
 
-    // Display the modified message in yellow
-    printf("\x1b[33mParent Process: Received '%s' from Child\x1b[0m\n", parentMessage);
+    // Display the modified message in yellow with the message part in white
+    printf("\x1b[33mParent Process: Received '\x1b[37m%s\x1b[33m' from Child\x1b[0m\n", parentMessage);
 
     close(fd[PARENT_READ]);
     close(fd[PARENT_WRITE]);
