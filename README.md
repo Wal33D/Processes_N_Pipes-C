@@ -1,6 +1,6 @@
 # 🔄 Processes-N-Pipes: Case Inversion IPC Demo
 
-Welcome to **Processes-N-Pipes**, an educational and entertaining exploration into the realms of inter-process communication (IPC) using ordinary pipes. This specialized toolkit demonstrates a simple yet intriguing use case: sending a string message between two processes where the receiving process inverses the case of each character and sends it back. Perfect for learners and educators, this project simplifies understanding IPC through a fun, interactive example.
+Welcome to **Processes-N-Pipes**, an educational and entertaining exploration into the realms of inter-process communication (IPC) using ordinary pipes. This specialized toolkit demonstrates a simple yet intriguing use case: sending a string message between two processes where the receiving process inversely cases each character and sends it back. Perfect for learners and educators, this project simplifies understanding IPC through a fun, interactive example.
 
 ## 🎯 Core Functionality
 
@@ -18,6 +18,8 @@ Prepare for this IPC journey with:
 
 ### Installation & Compilation
 
+Ensure your project directory is structured with `main.c` and `utilities.c` inside the `/src` folder, and `utilities.h` inside the `/include` folder.
+
 1. **Clone this repository**:
     \`\`\`bash
     git clone https://github.com/your-username/Processes-N-Pipes.git
@@ -28,17 +30,18 @@ Prepare for this IPC journey with:
     cd Processes-N-Pipes
     \`\`\`
 
-3. **Compile the project**:
+3. **Compile the project using the Makefile**:
     \`\`\`bash
-    gcc -o ipc_demo main.c
+    make
     \`\`\`
+This will compile the source files from the `/src` directory and place the executable in the `/bin` directory as defined in the Makefile.
 
 ## 📘 How to Play
 
 After compiling, simply run the executable with a message as an argument to see the case inversion process in action:
 
 \`\`\`bash
-./ipc_demo "Hi There!"
+./bin/myprogram "Hi There!"
 \`\`\`
 
 You'll observe that the message sent to the second process comes back with each of its character's case inverted, for example, "Hi There!" becomes "hI tHERE!".
@@ -49,16 +52,6 @@ This project illustrates the essential principles of IPC using a straightforward
 
 - **Process 1 (Parent)** sends "Hi There!" to **Process 2 (Child)**.
 - **Process 2 (Child)** receives the message, inverts the case, and sends "hI tHERE!" back to **Process 1 (Parent)**.
-
-\`\`\`plaintext
-$ gcc [sourcefile] -o [executable]
-$ ./[executable] "Learning is fun!"
-
-Parent([pid]): Shares "Learning is fun!" with Child
-Child([pid]): Message received and transformed
-Child([pid]): Case inversion complete, sending back
-Parent([pid]): Receives "lEARNING IS FUN!" from Child
-\`\`\`
 
 ### Dive Into the Mechanics
 

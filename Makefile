@@ -4,9 +4,6 @@ CC = gcc
 # Compiler flags
 CFLAGS = -Wall -Iinclude
 
-# Define any directories containing header files other than /usr/include
-INCLUDES = -Iinclude
-
 # Define the source directory and target binary directory
 SRCDIR = src
 BINDIR = bin
@@ -15,25 +12,25 @@ BINDIR = bin
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 
 # Define the C object files 
-# (this translates the .c files in SOURCES to .o files in the same directory)
-OBJECTS = $(SOURCES:.c=.o)
+# (this uses pattern substitution to replace .c with .o for each filename in SOURCES)
+OBJECTS = $(patsubst %,$(SRCDIR)/%,$(notdir $(SOURCES:.c=.o)))
 
 # Define the executable file name
 TARGET = $(BINDIR)/myprogram
 
 # The first rule is the one executed when no parameters are fed to the Makefile
-all: build $(TARGET)
+all: $(TARGET)
 
-# Rule for making the bin directory
-build:
+# Rule for making the target binary directory
+$(BINDIR):
 	@mkdir -p $(BINDIR)
 
 # Rule for linking the program
-$(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^
+$(TARGET): $(OBJECTS) | $(BINDIR)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@
 
 # Rule for compiling the source files to object files
-%.o: %.c
+$(SRCDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Clean-up operations
