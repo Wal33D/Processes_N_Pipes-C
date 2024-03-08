@@ -1,9 +1,5 @@
 /********************************************************************************************
-* Course: CS 4540 – Fall 2014
-* Assignment <2> -
-* Name: <Waleed H Gudah>
-* E-mail: <waleed.h.gudah@wmich.edu>
-* Submitted: <10/12/14>
+* Author: <Wal33D>
 /********************************************************************************************
     This program forks to create a child process, the Parent process takes a command line argument
     example:(./thisProgram hello) or (./this "Hello My name is Waleed Gudah")
