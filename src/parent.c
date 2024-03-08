@@ -32,6 +32,8 @@ void parentProcess(int fd[], char *message, int choice)
     }
 
     // Send the operation code to the child
+            fprintf(stderr, COLOR_WHITE "Parent: " COLOR_RESET "Sending Message to Child Process...\n");
+
     if (write(fd[PARENT_WRITE], &choice, sizeof(choice)) != sizeof(choice))
     {
         fprintf(stderr, COLOR_WHITE "Parent sighs: " COLOR_RESET "Oh dear, I couldn't get your sibling to listen...\n");
