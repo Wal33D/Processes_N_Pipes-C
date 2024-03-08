@@ -1,3 +1,41 @@
+Course: CS 4540 – Fall 2014
+Assignment <2> 
+Name: <Waleed H Gudah>
+E-mail: <waleed.h.gudah@wmich.edu>
+Submitted: <10/12/14>
+
+Usage example: (./thisProgram hello) or (./this "Hello My name is ...")
+Please use " ", for messages longer than 1 word.
+
+Demo {
+
+ $ gcc [sourcefile] -o [executable]
+ $ ./[executable] "Hi There!"
+
+    Parent([pid]): Sending [Hi There!] to Child
+
+    Child([pid]): Received Message
+
+    Child([pid]): Toggling Case and Sending to Parent
+
+    Parent([pid]): Received [hI tHERE!] from Child
+
+}
+
+Requirements {
+
+Design a program using ordinary pipes in which one process sends 
+a string message to a second process, and the second process reverses 
+the case of each character (lower to upper, upper to lower) in the
+received message, and sends the reverse-case message to the 
+first process. For example, if the first process sends the 
+message “Hi There” the second process will reply with 
+“hI tHERE”. The program requires using two pipes: 
+one for sending the original message from Process 1 to Process 2,
+and the other for sending the reverse-case message from Process 2 to Process 1.
+
+}
+
 # Processes-N-Pipes
 
 Processes-N-Pipes is a versatile tool designed to facilitate inter-process communication (IPC) and data pipelining in various computing environments. By abstracting complex IPC mechanisms, it aims to simplify the development of applications that require efficient and reliable communication between processes.
@@ -77,8 +115,7 @@ print(f"Received: {message}")
 
 ## Contributing
 
-We welcome contributions to the Processes-N-Pipes project! Whether it's submitting bug reports, feature requests, or code contributions, please follow our contribution guidelines outlined in the CONTRIBUTING.md file.
-
+We welcome contributions to the Processes-N-Pipes project! Whether it's submitting bug reports, feature requests, or code contributions.
 ## License
 
 Processes-N-Pipes is released under the [MIT License](LICENSE). Feel free to use it within your own projects.
