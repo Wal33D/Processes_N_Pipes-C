@@ -4,12 +4,13 @@ void childProcess(int fd[], int choice) {
     // Close unused ends of the pipes
     close(fd[PARENT_READ]);
     close(fd[PARENT_WRITE]);
-  if (choice == 4) {
+
+    if (choice == 4) {
         // Handling a random math operation
         int number;
         read(fd[CHILD_READ], &number, sizeof(number));
         srand(time(NULL)); // Seed the random number generator
-        
+
         int operationNumber = rand() % 10; // Generate a number for the operation, between 0-9
         int originalNumber = number; // Keep the original number for printing
 
@@ -23,7 +24,6 @@ void childProcess(int fd[], int choice) {
                 printf(COLOR_CYAN "Child ponders: " COLOR_RESET "Taking %d away from %d, it becomes %d!\n", operationNumber, originalNumber, number);
                 break;
             case 2:
-                // For multiplication, let's adjust the range to 1-3 for a clearer result
                 operationNumber = (rand() % 3) + 1; // Adjusting range for multiplication
                 number *= operationNumber; // Multiply by the operation number
                 printf(COLOR_CYAN "Child dreams: " COLOR_RESET "Multiplying %d by %d... Look! It's now %d!\n", originalNumber, operationNumber, number);
@@ -50,29 +50,39 @@ void childProcess(int fd[], int choice) {
         char *modifiedMessage;
         // Enthusiastically accepting the task
         switch(opCode) {
-            case 1: // Toggle case
-                printf(COLOR_CYAN "Child giggles: " COLOR_RESET "Oh, I love playing with case! Watch this!\n");
+            case 1:
                 modifiedMessage = toggleString(buffer);
+                printf(COLOR_CYAN "Child giggles: " COLOR_RESET "Oh, I love playing with case! Watch this!\n");
                 break;
-            case 2: // Uppercase
-                printf(COLOR_CYAN "Child shouts: " COLOR_RESET "I'll shout this back, louder and prouder!\n");
+            case 2:
                 modifiedMessage = uppercaseOperation(buffer);
+                printf(COLOR_CYAN "Child shouts: " COLOR_RESET "I'll shout this back, louder and prouder!\n");
                 break;
-            case 3: // Create Palindrome
-                printf(COLOR_CYAN "Child muses: " COLOR_RESET "Mirroring is fun, let's make a palindrome!\n");
+            case 3:
                 modifiedMessage = createPalindrome(buffer);
+                printf(COLOR_CYAN "Child muses: " COLOR_RESET "Mirroring is fun, let's make a palindrome!\n");
                 break;
             default:
-                printf(COLOR_CYAN "Child is puzzled but obliges: " COLOR_RESET "I'm not quite sure, but here you go!\n");
                 modifiedMessage = strdup(buffer); // Default action: echo the message
+                printf(COLOR_CYAN "Child is puzzled but obliges: " COLOR_RESET "I'm not quite sure, but here you go!\n");
                 break;
         }
 
-        // Cheerfully sending the modified message back
+        // Send the modified message back
         write(fd[CHILD_WRITE], modifiedMessage, strlen(modifiedMessage) + 1);
         printf(COLOR_CYAN "Child beams: " COLOR_RESET "Done! Sending it back now!\n");
 
         free(modifiedMessage); // Free the dynamically allocated memory
+    }
+
+    // Wait for the parent's "Thank you" message
+    char parentThanks[1024];
+    if (read(fd[CHILD_READ], parentThanks, sizeof(parentThanks) - 1) > 0) {
+        printf(COLOR_CYAN "Child hears: " COLOR_RESET "Thanks for talking, kiddo!\n");
+
+        // Respond to the parent's "Thank you" message
+        char responseToParent[] = "No problem, see ya later!";
+        write(fd[CHILD_WRITE], responseToParent, sizeof(responseToParent));
     }
 
     // Close the pipes and exit
