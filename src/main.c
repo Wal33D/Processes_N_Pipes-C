@@ -5,7 +5,8 @@ int main()
     int choice;
     char message[1024];
 
-    do {
+    do
+    {
         printf("\nChoose a Demo:\n\n");
         printf("1. Toggle and Return a Message\n");
         printf("2. Uppercase and Return a Message\n");
@@ -16,7 +17,8 @@ int main()
         scanf("%d", &choice);
         getchar();
 
-        if(choice == 5) {
+        if (choice == 5)
+        {
             printf("Exiting...\n");
             break;
         }
@@ -63,7 +65,7 @@ int main()
             }
             wait(NULL);
         }
-    } while(choice != 5);
+    } while (choice != 5);
 
     return 0;
 }

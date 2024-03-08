@@ -23,16 +23,16 @@ void parentProcess(int fd[], char *message, int choice)
         int *pNumber = (int *)message;
         printf(COLOR_GREEN "Parent quizzes: " COLOR_RESET "I wonder how we can play with the number " COLOR_YELLOW "%d" COLOR_RESET " today?\n", *pNumber);
         // Then send the number to the child
-          sleep(3);
         write(fd[PARENT_WRITE], pNumber, sizeof(int));
         break;
     default:
         printf(COLOR_GREEN "Parent is confused: " COLOR_RESET "Hmm, not sure what you want, but let's try '" COLOR_WHITE "%s" COLOR_RESET "' anyway.\n", message);
         break;
     }
+        sleep(3);
 
     // Send the operation code to the child
-            fprintf(stderr, COLOR_WHITE "Parent: " COLOR_RESET "Sending Message to Child Process...\n");
+    fprintf(stderr, COLOR_WHITE "Parent: " COLOR_RESET "Sending Message to Child Process...\n");
 
     if (write(fd[PARENT_WRITE], &choice, sizeof(choice)) != sizeof(choice))
     {
@@ -41,9 +41,9 @@ void parentProcess(int fd[], char *message, int choice)
     }
 
     if (choice != 4)
- {
+    {
         // Send the message for string operations
-         sleep(3);
+        sleep(3);
         if (write(fd[PARENT_WRITE], message, strlen(message) + 1) != strlen(message) + 1)
         {
             fprintf(stderr, COLOR_WHITE "Parent sighs: " COLOR_RESET "Oopsie daisy, my message got lost in the mail...\n");
@@ -55,7 +55,7 @@ void parentProcess(int fd[], char *message, int choice)
     if (choice == 4)
     {
         int result;
-         sleep(3);
+        sleep(3);
         if (read(fd[PARENT_READ], &result, sizeof(result)) < 0)
         {
             fprintf(stderr, COLOR_WHITE "Parent frets: " COLOR_RESET "Gosh, I never heard back. Are they ignoring me?\n");
@@ -66,7 +66,7 @@ void parentProcess(int fd[], char *message, int choice)
     else
     {
         char buffer[1024];
-         sleep(3);
+        sleep(3);
         int length = read(fd[PARENT_READ], buffer, sizeof(buffer));
         if (length < 0)
         {
