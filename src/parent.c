@@ -19,9 +19,8 @@ void parentProcess(int fd[], char *message, int choice)
         printf(COLOR_GREEN "Parent ponders: " COLOR_RESET "Oh, what if we made this " COLOR_YELLOW "mirror" COLOR_RESET " itself? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
         break;
     case 4:
-        // Assuming you somehow convert 'message' to an integer 'number'
-        int number = atoi(message); // Convert the input string to an integer
-        printf(COLOR_GREEN "Parent quizzes: " COLOR_RESET "I wonder how we can play with the number " COLOR_YELLOW "%d" COLOR_RESET " today?\n", number);
+
+        printf(COLOR_GREEN "Parent quizzes: " COLOR_RESET "I wonder how we can play with the number " COLOR_YELLOW "%d" COLOR_RESET " today?\n", message);
 
         break;
     default:
