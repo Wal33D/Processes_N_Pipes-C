@@ -19,9 +19,7 @@ void parentProcess(int fd[], char *message, int choice)
         printf(COLOR_GREEN "Parent ponders: " COLOR_RESET "Oh, what if we made this " COLOR_YELLOW "mirror" COLOR_RESET " itself? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
         break;
     case 4:
-        int number = atoi(message); // Assuming the message is a number for case 4
-        printf(COLOR_GREEN "Parent quizzes: " COLOR_RESET "I wonder how we can play with the number " COLOR_YELLOW "%d" COLOR_RESET " today?\n", number);
-
+     
         break;
     default:
         printf(COLOR_GREEN "Parent is confused: " COLOR_RESET "Hmm, not sure what you want, but let's try '" COLOR_WHITE "%s" COLOR_RESET "' anyway.\n", message);
@@ -37,13 +35,15 @@ void parentProcess(int fd[], char *message, int choice)
 
     if (choice == 4)
     {
-        // For math operations, convert the message to an integer and send it
-        int number = atoi(message); // Assuming the message is a number for case 4
-        if (write(fd[PARENT_WRITE], &number, sizeof(number)) != sizeof(number))
-        {
-            fprintf(stderr, COLOR_WHITE "Parent sighs: " COLOR_RESET "Seems like my math question got lost...\n");
-            exit(EXIT_FAILURE);
-        }
+        // Correctly interpret the message as a pointer to an integer
+        int *pNumber = (int *)message;
+        printf(COLOR_GREEN "Parent quizzes: " COLOR_RESET "I wonder how we can play with the number " COLOR_YELLOW "%d" COLOR_RESET " today?\n", *pNumber);
+        // Then send the number to the child
+        write(fd[PARENT_WRITE], pNumber, sizeof(int));
+        // Receive and print the result as an integer
+        int result;
+        read(fd[PARENT_READ], &result, sizeof(result));
+        printf(COLOR_GREEN "Parent beams proudly: " COLOR_RESET "Look! The number magic turned it into " COLOR_YELLOW "%d" COLOR_RESET "!\n", result);
     }
     else
     {
