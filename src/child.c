@@ -1,6 +1,6 @@
 #include "utilities.h"
 
-void childProcess(int fd[]) {
+void childProcess(int fd[], int choice) {
     // Close unused ends of the pipes
     close(fd[PARENT_READ]);
     close(fd[PARENT_WRITE]);

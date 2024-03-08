@@ -37,4 +37,4 @@ char *uppercaseOperation(const char *input);
 
 typedef char *(*StringOperation)(const char *input);
 
-#endif // UTILITIES_H
+#endif
