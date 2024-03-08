@@ -1,29 +1,26 @@
-#include <unistd.h>
-#include <sys/wait.h>
 #include "utilities.h"
 
 void parentProcess(int fd[], char *message) {
     int length;
-    char parentMessage[strlen(message) + 1]; // Adjust for null terminator
+    char parentMessage[strlen(message) + 1];
 
     close(fd[CHILD_READ]);
     close(fd[CHILD_WRITE]);
 
-    printf("\x1b[33mParent Process: Sending '\x1b[37m%s\x1b[33m' to Child\x1b[0m\n", message);
+    printf(COLOR_YELLOW "Parent Process: Sending '" COLOR_WHITE "%s" COLOR_YELLOW "' to Child" COLOR_RESET "\n", message);
     if (write(fd[PARENT_WRITE], message, strlen(message)) != strlen(message)) {
-        fprintf(stderr, "\x1b[37mParent write failed\x1b[0m\n");
+        fprintf(stderr, COLOR_WHITE "Parent write failed" COLOR_RESET "\n");
         exit(EXIT_FAILURE);
     }
 
     length = read(fd[PARENT_READ], &parentMessage, sizeof(parentMessage) - 1);
     if (length < 0) {
-        fprintf(stderr, "\x1b[37mParent read failed\x1b[0m\n");
+        fprintf(stderr, COLOR_WHITE "Parent read failed" COLOR_RESET "\n");
         exit(EXIT_FAILURE);
     }
-    parentMessage[length] = '\0'; // Ensure null-termination
+    parentMessage[length] = '\0';
 
-    // Display the modified message in yellow with the message part in white
-    printf("\x1b[33mParent Process: Received '\x1b[37m%s\x1b[33m' from Child\x1b[0m\n", parentMessage);
+    printf(COLOR_YELLOW "Parent Process: Received '" COLOR_WHITE "%s" COLOR_YELLOW "' from Child" COLOR_RESET "\n", parentMessage);
 
     close(fd[PARENT_READ]);
     close(fd[PARENT_WRITE]);

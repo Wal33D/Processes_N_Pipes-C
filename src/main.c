@@ -1,6 +1,3 @@
-#include <unistd.h>
-#include <sys/wait.h>
-#include <assert.h>
 #include "utilities.h"
 
 int main(int argc, char *argv[]) {

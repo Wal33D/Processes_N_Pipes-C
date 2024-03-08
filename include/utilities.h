@@ -1,21 +1,34 @@
 #ifndef UTILITIES_H
 #define UTILITIES_H
 
+// Standard library includes
+#include <assert.h>
+#include <ctype.h>      // For isalpha, tolower, toupper
+#include <stdbool.h>    // For bool type
 #include <stdio.h>      // For fprintf, printf, perror
 #include <stdlib.h>     // For malloc, free, exit
 #include <string.h>     // For strlen, strcpy
-#include <ctype.h>      // For isalpha, tolower, toupper
-#include <stdbool.h>    // For bool type
+#include <unistd.h>
+#include <sys/wait.h>
 
-#define PARENT_READ  0
-#define CHILD_WRITE  1
+// Definitions for pipe indices and the number of pipe pairs
 #define CHILD_READ   2
+#define CHILD_WRITE  1
+#define PARENT_READ  0
 #define PARENT_WRITE 3
-#define PIPE_PAIRS 2
-// Function declarations updated
-char *toggleString(const char *input); // Updated parameter to const char*
-int inputValidation(int argc, char *argv[]);
-void parentProcess(int fd[], char *message);
-void childProcess(int fd[]);
+#define PIPE_PAIRS   2
 
-#endif
+// ANSI Color Code Definitions
+#define COLOR_CYAN   "\x1b[36m"
+#define COLOR_GREEN  "\x1b[32m"
+#define COLOR_RESET  "\x1b[0m"
+#define COLOR_WHITE  "\x1b[37m"
+#define COLOR_YELLOW "\x1b[33m"
+
+// Function declarations
+char *toggleString(const char *input);
+int inputValidation(int argc, char *argv[]);
+void childProcess(int fd[]);
+void parentProcess(int fd[], char *message);
+
+#endif // UTILITIES_H

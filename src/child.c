@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdlib.h>
 #include "utilities.h"
 
 void childProcess(int fd[]) {
@@ -13,14 +9,14 @@ void childProcess(int fd[]) {
 
     length = read(fd[CHILD_READ], &childMessage, sizeof(childMessage) - 1);
     if (length < 0) {
-        fprintf(stderr, "\x1b[37mChild read failed\x1b[0m\n");
+        fprintf(stderr, COLOR_WHITE "Child read failed" COLOR_RESET "\n");
         exit(EXIT_FAILURE);
     }
-    childMessage[length] = '\0'; // Ensure null-termination
+    childMessage[length] = '\0';
 
-    printf("\x1b[36mChild Process: Received '\x1b[37m%s\x1b[36m'\x1b[0m\n", childMessage);
+    printf(COLOR_CYAN "Child Process: Received '" COLOR_WHITE "%s" COLOR_CYAN "'" COLOR_RESET "\n", childMessage);
     if (write(fd[CHILD_WRITE], toggleString(childMessage), strlen(childMessage)) < 0) {
-        fprintf(stderr, "\x1b[37mChild write failed\x1b[0m\n");
+        fprintf(stderr, COLOR_WHITE "Child write failed" COLOR_RESET "\n");
         exit(EXIT_FAILURE);
     }
 
