@@ -4,37 +4,34 @@ Name: <Waleed H Gudah>
 E-mail: <waleed.h.gudah@wmich.edu>
 Submitted: <10/12/14>
 
-Usage example:(./thisProgram hello) or (./this "Hello My name is Waleed Gudah")
-Please use " ", for messages longer than 1 word
-    
+Usage example: (./thisProgram hello) or (./this "Hello My name is ...")
+Please use " ", for messages longer than 1 word.
+
 Demo {
-	
- waleed@Waleed-Ubuntu:~/Desktop/AS2 OS$ gcc Assignment2WaleedGudah -o A2
- waleed@Waleed-Ubuntu:~/Desktop/AS2 OS$ ./A2 "Hi There!"
 
-	Parent(7749): Sending [Hi There!] to Child
+ $ gcc [sourcefile] -o [executable]
+ $ ./[executable] "Hi There!"
 
-	Child(7750): Recieved Message
+    Parent([pid]): Sending [Hi There!] to Child
 
-	Child(7750): Toggling Case and Sending to Parent
+    Child([pid]): Received Message
 
-	Parent(7749): Received [hI tHERE!] from Child
+    Child([pid]): Toggling Case and Sending to Parent
 
- waleed@Waleed-Ubuntu:~/Desktop/Link to Shared Folder/AS2 OS$ 
+    Parent([pid]): Received [hI tHERE!] from Child
 
-    }
+}
 
-Requirments {
-	
+Requirements {
+
 Design a program using ordinary pipes in which one process sends 
 a string message to a second process, and the second process reverses 
 the case of each character (lower to upper, upper to lower) in the
 received message, and sends the reverse-case message to the 
 first process. For example, if the first process sends the 
-message “Hi There” the second process will reply it with 
+message “Hi There” the second process will reply with 
 “hI tHERE”. The program requires using two pipes: 
 one for sending the original message from Process 1 to Process 2,
 and the other for sending the reverse-case message from Process 2 to Process 1.
 
 }
-
