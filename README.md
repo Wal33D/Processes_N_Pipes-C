@@ -53,6 +53,7 @@ This project illustrates the essential principles of IPC using a straightforward
 - **Process 1 (Parent)** sends "Hi There!" to **Process 2 (Child)**.
 - **Process 2 (Child)** receives the message, inverts the case, and sends "hI tHERE!" back to **Process 1 (Parent)**.
 
+- ### Has been updated, terminal menu for demonstration added
 ### Dive Into the Mechanics
 
 The program employs two pipes:
