@@ -28,9 +28,9 @@
 // Function declarations
 char *toggleString(const char *input);
 int inputValidation(int argc, char *argv[]);
-void childProcess(int fd[], StringOperation op);
+void childProcess(int fd[]);
 void parentProcess(int fd[], char *message);
-void createPalindrome(char *word); 
+void *createPalindrome(const char *word); 
 
 typedef char *(*StringOperation)(const char *input);
 

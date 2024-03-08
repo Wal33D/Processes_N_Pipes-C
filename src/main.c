@@ -1,12 +1,5 @@
 #include "utilities.h"
 
-void demoToggleString(char *input) {
-    char *toggledMessage = toggleString(input);
-    printf("Toggled message: %s\n", toggledMessage);
-    free(toggledMessage);
-}
-
-
 // Main function
 int main() {
     int choice;
