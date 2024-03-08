@@ -12,10 +12,10 @@ int main() {
     char message[1024]; // Assuming a message limit of 1024 characters
 
     printf("Choose a Demo:\n");
-    printf("1. Toggling and Returning a Message\n");
-    printf("2. Simulated Message Exchange\n");
-    printf("3. Toggle String Case\n");
-    printf("4. Create a Palindrome from a Word\n"); // New option
+    printf("1. Toggle and Return a Message\n");
+    printf("2. Uppercase and Return a Message\n");
+    printf("3. Palindrome and Return a Message\n");
+    printf("4. Simulated Message Exchange - not done\n"); // New option
     printf("Enter your choice (1-4): ");
     scanf("%d", &choice);
     getchar(); // consume the newline character after the number
@@ -46,13 +46,11 @@ int main() {
                 if (choice == 1) {
                     childProcess(fd);
                 } else {
-                    // Simulated message exchange's child process functionality
                 }
             } else { // Parent process
                 if (choice == 1) {
                     parentProcess(fd, message);
                 } else {
-                    // Simulated message exchange's parent process functionality
                 }
             }
             break;
