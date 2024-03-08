@@ -12,6 +12,12 @@ OBJDIR = $(BUILDDIR)/object
 # Define the C source files (wildcard picks all .c files in the directory)
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 
+# Exclude main.c from the sources to avoid duplicate definitions
+SOURCES := $(filter-out $(SRCDIR)/main.c, $(SOURCES))
+
+# Add parent.c and child.c to sources
+SOURCES += $(SRCDIR)/parent.c $(SRCDIR)/child.c
+
 # Define the C object files (placing them in the OBJDIR directory)
 OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 
