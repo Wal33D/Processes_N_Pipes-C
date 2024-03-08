@@ -1,13 +1,3 @@
-/********************************************************************************************
-* Author: <Wal33D>
-/********************************************************************************************
-    This program forks to create a child process, the Parent process takes a command line argument
-    example:(./thisProgram hello) or (./this "Hello My name is Waleed Gudah")
-    writes it to a pipe, the child process calls the toggleString method
-    to toggle the case of the message and writes the result into a second pipe
-    finally the parent process reads the now toggle message and prints it to the console.
-*********************************************************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -16,149 +6,115 @@
 #include <ctype.h>
 #include <assert.h>
 #include <stdbool.h>
-/*
-// some macros to make the code more understandable
-// regarding which pipe to use to a read/write operation
-//
-//  Parent: reads from P1_READ, writes on P1_WRITE
-//  Child:  reads from P2_READ, writes on P2_WRITE
-*/
-#define P1_READ 0
-#define P2_WRITE 1
-#define P2_READ 2
-#define P1_WRITE 3
+#include "utilities.h"
 
-// the total number of pipe *pairs* we need
-#define NUM_PIPES 2
+// Define pipe indices for readability
+#define PARENT_READ  0
+#define CHILD_WRITE  1
+#define CHILD_READ   2
+#define PARENT_WRITE 3
 
-/*
-Main takes input from command line, calls input validation to make sure of proper input,
-then creates the pipes we will need and the forks the child process, Parent and Child
-execute they're respective code
-*/
-int main(int argc, char *argv[])
-{
+// Number of pipe pairs
+#define PIPE_PAIRS 2
 
-    assert(argc > 1);
+/**
+ * @brief Entry point. This application demonstrates IPC using pipes by toggling
+ *        the case of a string passed as a command line argument.
+ * 
+ * The parent process sends a string to the child process via a pipe. The child
+ * process toggles the case of the string (upper to lower, lower to upper) and
+ * sends it back to the parent through another pipe. The parent then prints the
+ * modified string to the console.
+ * 
+ * Example usage:
+ * ./thisProgram "Hello World" -> outputs "hELLO wORLD"
+ * 
+ * @param argc Number of command line arguments
+ * @param argv Command line arguments
+ * @return int Program exit status
+ */
+int main(int argc, char *argv[]) {
+    assert(argc > 1); // Ensure at least one argument is provided
 
-    int fd[2 * NUM_PIPES]; // Declare int[] of file descriptors
+    int fd[2 * PIPE_PAIRS]; // File descriptors for the pipes
+    int length; // Variable to store message length
+    pid_t pid; // Process ID
 
-    int len, i; // Declare length and integer for count
+    // Buffers for the parent and child messages
+    char parentMessage[strlen(argv[1])]; 
+    char childMessage[strlen(argv[1])]; 
 
-    pid_t pid; // Declare process id
+    // Verify proper input
+    if (inputValidation(argc, argv) == 0) {
+        strcpy(parentMessage, argv[1]);
+    }
 
-    char parent[strlen(argv[1])]; // Declare Parent array
-
-    char child[strlen(argv[1])]; // Declare Child array
-
-    if (inputValidation(argc, argv) == 0) /* Check for proper input */
-
-        strcpy(parent, argv[1]);
-
-    // create all the descriptor pairs we need
-    for (i = 0; i < NUM_PIPES; ++i)
-    {
-        if (pipe(fd + (i * 2)) < 0)
-        {
-            perror("Failed to allocate pipes");
+    // Initialize pipes
+    for (int i = 0; i < PIPE_PAIRS; ++i) {
+        if (pipe(fd + (i * 2)) < 0) {
+            perror("Pipe initialization failed");
             exit(EXIT_FAILURE);
         }
     }
 
-    // fork() returns 0 for child process, child-pid for parent process.
-    if ((pid = fork()) < 0)
-    {
+    // Create child process
+    if ((pid = fork()) < 0) {
         perror("Failed to fork process");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
-    //////////////////////////////Childs Code BEGINS//////////////////////////////////
-    // if the pid is zero, this is the child process
-    if (pid == 0)
-    {
-        // Child. Start by closing descriptors we
-        //  don't need in this process
-        close(fd[P1_READ]);
-        close(fd[P1_WRITE]);
+    // Child process code
+    if (pid == 0) {
+        // Close unused file descriptors
+        close(fd[PARENT_READ]);
+        close(fd[PARENT_WRITE]);
 
-        // used for output
-        pid = getpid();
-
-        // wait for parent to send us a value
-        len = read(fd[P2_READ], &child, len);
-        if (len < 0)
-        {
-            perror("Child: Failed to read data from pipe");
+        // Read the message from the parent
+        length = read(fd[CHILD_READ], &childMessage, sizeof(childMessage));
+        if (length < 0) {
+            perror("Child read failed");
             exit(EXIT_FAILURE);
         }
-        else if (len == 0)
-        {
-            // not an error, but certainly unexpected
-            fprintf(stderr, "Child: Read EOF from pipe");
-        }
-        else
-        {
 
-            // report pid to console
-            printf("Child(%d): Recieved Message\n\nChild(%d): Toggling Case and Sending to Parent\n", pid, pid);
-
-            // send the message to toggleString and write it to pipe//
-            if (write(fd[P2_WRITE], toggleString(child), strlen(child)) < 0)
-            {
-                perror("Child: Failed to write response value");
-                exit(EXIT_FAILURE);
-            }
+        // Log and toggle message case
+        printf("Child Process: Received '%s'\n", childMessage);
+        if (write(fd[CHILD_WRITE], toggleString(childMessage), strlen(childMessage)) < 0) {
+            perror("Child write failed");
+            exit(EXIT_FAILURE);
         }
 
-        // finished. close remaining descriptors.
-        close(fd[P2_READ]);
-        close(fd[P2_WRITE]);
-
+        // Close file descriptors and exit
+        close(fd[CHILD_READ]);
+        close(fd[CHILD_WRITE]);
         return EXIT_SUCCESS;
     }
 
-    //////////////////////////////Parent Code BEGINS//////////////////////////////////
+    // Parent process code
+    // Close unused file descriptors
+    close(fd[CHILD_READ]);
+    close(fd[CHILD_WRITE]);
 
-    // Parent. close unneeded descriptors
-    close(fd[P2_READ]);
-    close(fd[P2_WRITE]);
-
-    // used for output
-    pid = getpid();
-
-    // send a value to the child
-
-    printf("\nParent(%d): Sending %s to Child\n\n", pid, argv[1]);
-    if (write(fd[P1_WRITE], argv[1], strlen(argv[1])) != strlen(argv[1]))
-    {
-        perror("Parent: Failed to send value to child ");
+    // Send the message to the child
+    printf("Parent Process: Sending '%s' to Child\n", argv[1]);
+    if (write(fd[PARENT_WRITE], argv[1], strlen(argv[1])) != strlen(argv[1])) {
+        perror("Parent write failed");
         exit(EXIT_FAILURE);
     }
 
-    // now wait for a response
-    len = read(fd[P1_READ], &parent, strlen(parent));
-    if (len < 0)
-    {
-        perror("Parent: failed to read value from pipe");
+    // Read the modified message from the child
+    length = read(fd[PARENT_READ], &parentMessage, sizeof(parentMessage));
+    if (length < 0) {
+        perror("Parent read failed");
         exit(EXIT_FAILURE);
     }
-    else if (len == 0)
-    {
-        // not an error, but certainly unexpected
-        fprintf(stderr, "Parent(%d): Read EOF from pipe", pid);
-    }
-    else
-    {
-        // report what we received
-        printf("\nParent(%d): Received %s from Child\n\n", pid, parent);
-    }
 
-    // close down remaining descriptors
-    close(fd[P1_READ]);
-    close(fd[P1_WRITE]);
+    // Display the modified message
+    printf("Parent Process: Received '%s' from Child\n", parentMessage);
 
-    // wait for child termination
-    wait(NULL);
+    // Clean up
+    close(fd[PARENT_READ]);
+    close(fd[PARENT_WRITE]);
+    wait(NULL); // Wait for child process to terminate
 
     return EXIT_SUCCESS;
 }

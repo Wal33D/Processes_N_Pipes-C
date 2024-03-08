@@ -4,35 +4,33 @@ CC = gcc
 # Compiler flags
 CFLAGS = -Wall -Iinclude
 
-# Define the source directory and target binary directory
+# Define the source directory, object directory inside build, and target binary directory
 SRCDIR = src
-BINDIR = bin
+BUILDDIR = build
+OBJDIR = $(BUILDDIR)/object
 
 # Define the C source files (wildcard picks all .c files in the directory)
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 
-# Define the C object files 
-# (this uses pattern substitution to replace .c with .o for each filename in SOURCES)
-OBJECTS = $(patsubst %,$(SRCDIR)/%,$(notdir $(SOURCES:.c=.o)))
+# Define the C object files (placing them in the OBJDIR directory)
+OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 
-# Define the executable file name
-TARGET = $(BINDIR)/myprogram
+# Define the executable file name, reflecting the repo name
+TARGET = $(BUILDDIR)/processes-n-pipes
 
-# The first rule is the one executed when no parameters are fed to the Makefile
-all: $(TARGET)
+all: build $(TARGET)
 
-# Rule for making the target binary directory
-$(BINDIR):
-	@mkdir -p $(BINDIR)
+# Rule for making the necessary directories
+build:
+	@mkdir -p $(BUILDDIR) $(OBJDIR)
 
 # Rule for linking the program
-$(TARGET): $(OBJECTS) | $(BINDIR)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $@
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $^
 
 # Rule for compiling the source files to object files
-$(SRCDIR)/%.o: $(SRCDIR)/%.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean-up operations
 clean:
-	rm -f $(SRCDIR)/*.o $(TARGET)
+	rm -f $(OBJDIR)/*.o $(TARGET)
