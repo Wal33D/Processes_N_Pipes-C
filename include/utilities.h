@@ -26,6 +26,12 @@
 #define COLOR_WHITE "\x1b[37m"
 #define COLOR_YELLOW "\x1b[33m"
 
+// Default delay in seconds used for parent/child communication
+#define DEFAULT_DELAY 3
+
+// Global variable holding the actual delay duration
+extern int delaySeconds;
+
 // Function declarations
 char *toggleString(const char *input);
 int inputValidation(int argc, char *argv[]);

@@ -9,7 +9,7 @@ void childProcess(int fd[], int choice)
     {
         // Handling a random math operation
         int number;
-        sleep(3);
+        sleep(delaySeconds);
         read(fd[CHILD_READ], &number, sizeof(number));
         srand(time(NULL)); // Seed the random number generator
 
@@ -35,7 +35,7 @@ void childProcess(int fd[], int choice)
         }
 
         // Send the result back to the parent
-        sleep(3);
+        sleep(delaySeconds);
         write(fd[CHILD_WRITE], &number, sizeof(number));
         printf(COLOR_CYAN "Child smiles: " COLOR_RESET "All done with the numbers! Sending back a surprise!\n");
     }
@@ -43,7 +43,7 @@ void childProcess(int fd[], int choice)
     {
         // First, read the operation code
         int opCode;
-        sleep(3);
+        sleep(delaySeconds);
         read(fd[CHILD_READ], &opCode, sizeof(opCode));
 
         char buffer[1024];
@@ -79,7 +79,7 @@ void childProcess(int fd[], int choice)
 
         // Cheerfully sending the modified message back
         printf(COLOR_CYAN "Child beams: " COLOR_RESET "Done! Sending it back now!\n");
-        sleep(3);
+        sleep(delaySeconds);
         write(fd[CHILD_WRITE], modifiedMessage, strlen(modifiedMessage) + 1);
 
         free(modifiedMessage); // Free the dynamically allocated memory
