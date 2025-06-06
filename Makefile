@@ -9,6 +9,8 @@ SRCDIR = src
 BUILDDIR = build
 OBJDIR = $(BUILDDIR)/object
 
+.PHONY: build $(OBJDIR)
+
 # Define the C source files (wildcard picks all .c files in the directory)
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 
@@ -22,14 +24,17 @@ all: build $(TARGET)
 
 # Rule for making the necessary directories
 build:
-	@mkdir -p $(BUILDDIR) $(OBJDIR)
+	@mkdir -p $(BUILDDIR)
+
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
 
 # Rule for linking the program
 $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^
 
 # Rule for compiling the source files to object files
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
