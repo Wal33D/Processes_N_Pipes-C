@@ -1,9 +1,26 @@
 #include "utilities.h"
 
-int main()
+// Global variable definition for delay duration
+int delaySeconds = DEFAULT_DELAY;
+
+int main(int argc, char *argv[])
 {
     int choice;
     char message[1024];
+
+    // Allow optional command line argument to set the delay
+    if (argc >= 2)
+    {
+        int val = atoi(argv[1]);
+        if (val >= 0)
+        {
+            delaySeconds = val;
+        }
+        else
+        {
+            fprintf(stderr, "Invalid delay specified. Using default of %d seconds.\n", DEFAULT_DELAY);
+        }
+    }
 
     do
     {

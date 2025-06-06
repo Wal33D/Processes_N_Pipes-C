@@ -42,9 +42,9 @@ This will compile the source files from the `/src` directory and place the execu
 
 ## 📘 How to Play
 
-After compiling, run the executable to access the terminal menu:
+After compiling, run the executable to access the terminal menu. You may optionally specify the delay (in seconds) as the first argument:
 
-./build/processes-n-pipes
+./build/processes-n-pipes [delay]
 
 
 Follow the on-screen prompts to choose between various IPC demonstrations. When prompted, enter a message or a number based on your selection. Explore different functionalities and observe the impact of communication delays firsthand.
@@ -58,7 +58,7 @@ This version introduces a terminal menu that allows users to select between diff
 - **Palindrome and Return a Message**: Creates a palindrome from the input string.
 - **Perform a Random Math Operation on a Number**: Executes a random math operation on a provided number.
 
-Additionally, the introduction of a 3-second delay between parent and child communications offers insights into how processes interact with timing considerations.
+Additionally, communications are delayed by default to better highlight process interaction. You can override the default 3‑second pause by providing a delay value on the command line when starting the program.
 
 ## 💡 Contribute & Learn
 
