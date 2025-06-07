@@ -34,7 +34,6 @@ extern int delaySeconds;
 
 // Function declarations
 char *toggleString(const char *input);
-int inputValidation(int argc, char *argv[]);
 
 void childProcess(int fd[], int choice);
 void parentProcess(int fd[], char *message, int choice);
