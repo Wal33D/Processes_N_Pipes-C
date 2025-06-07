@@ -1,24 +1,30 @@
 #include "utilities.h"
 
+/*
+ * childProcess runs in the forked child.  It reads data from the parent,
+ * performs the requested transformation and writes the result back.
+ */
 void childProcess(int fd[], Operation choice)
 {
-    // Close unused ends of the pipes
+    /* only use the child-specific ends of the pipes */
     MY_CLOSE(fd[PARENT_READ]);
     MY_CLOSE(fd[PARENT_WRITE]);
     if (choice == OP_RANDOM_MATH)
     {
-        // Handling a random math operation
+        /* branch: the parent sent us a number to modify */
         int number;
         MY_SLEEP(delaySeconds);
+        /* read the integer from the parent */
         if (robustRead(fd[CHILD_READ], &number, sizeof(number)) < 0)
             exit(EXIT_FAILURE);
 
-        srand(time(NULL)); // Seed the random number generator
+        /* use current time to seed the random number generator */
+        srand(time(NULL));
         int originalNumber = number; // Keep the original number for printing
         number = randomMathOperation(number);
         printf(COLOR_CYAN "Child processed number: " COLOR_RESET "%d -> %d\n", originalNumber, number);
 
-        // Send the result back to the parent
+        /* send the result back to the parent */
         MY_SLEEP(delaySeconds);
         if (robustWrite(fd[CHILD_WRITE], &number, sizeof(number)) < 0)
             exit(EXIT_FAILURE);
@@ -26,6 +32,7 @@ void childProcess(int fd[], Operation choice)
     }
     else
     {
+        /* string manipulation path */
         // First, read the operation code
         Operation opCode;
         MY_SLEEP(delaySeconds);
@@ -33,13 +40,14 @@ void childProcess(int fd[], Operation choice)
             exit(EXIT_FAILURE);
 
         char buffer[1024];
+        /* then read the text to operate on */
         int length = robustRead(fd[CHILD_READ], buffer, sizeof(buffer) - 1);
         if (length < 0)
             exit(EXIT_FAILURE);
         buffer[length] = '\0'; // Null-terminate the string
 
         char *modifiedMessage;
-        // Enthusiastically accepting the task
+        /* perform the requested string operation */
         switch (opCode)
         {
         case OP_TOGGLE:
@@ -60,7 +68,7 @@ void childProcess(int fd[], Operation choice)
             break;
         }
 
-        // Cheerfully sending the modified message back
+        /* pass the processed string back to the parent */
         printf(COLOR_CYAN "Child beams: " COLOR_RESET "Done! Sending it back now!\n");
         MY_SLEEP(delaySeconds);
         if (robustWrite(fd[CHILD_WRITE], modifiedMessage, strlen(modifiedMessage) + 1) < 0)
@@ -69,7 +77,7 @@ void childProcess(int fd[], Operation choice)
         free(modifiedMessage); // Free the dynamically allocated memory
     }
 
-    // Close the pipes and exit
+    /* tidy up and terminate */
     MY_CLOSE(fd[CHILD_READ]);
     MY_CLOSE(fd[CHILD_WRITE]);
     exit(EXIT_SUCCESS);

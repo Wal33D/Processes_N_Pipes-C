@@ -1,6 +1,9 @@
 #include "utilities.h"
 #include <errno.h>
 
+/* Utility implementations used by both parent and child. */
+
+/* read exactly 'count' bytes, retrying after interrupts */
 ssize_t robustRead(int fd, void *buf, size_t count)
 {
     size_t total = 0;
@@ -24,6 +27,7 @@ ssize_t robustRead(int fd, void *buf, size_t count)
     return (ssize_t)total;
 }
 
+/* write all bytes even if interrupted by a signal */
 ssize_t robustWrite(int fd, const void *buf, size_t count)
 {
     size_t total = 0;
@@ -45,6 +49,7 @@ ssize_t robustWrite(int fd, const void *buf, size_t count)
     return (ssize_t)total;
 }
 
+/* return a new string with each letter's case inverted */
 char *toggleString(const char *input)
 {
     size_t len = strlen(input);
@@ -65,6 +70,7 @@ char *toggleString(const char *input)
 }
 
 
+/* build and return a palindrome formed from 'word' */
 char *createPalindrome(const char *word)
 {
     if (word == NULL)
@@ -97,6 +103,7 @@ char *createPalindrome(const char *word)
     return palindrome;
 }
 
+/* convert the entire input string to uppercase */
 char *uppercaseOperation(const char *input)
 {
     if (input == NULL)
@@ -120,6 +127,7 @@ char *uppercaseOperation(const char *input)
     return output;
 }
 
+/* apply a random arithmetic operation to 'number' */
 int randomMathOperation(int number)
 {
     int operationNumber = rand() % 10;
