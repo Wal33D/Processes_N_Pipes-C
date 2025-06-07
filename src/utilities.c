@@ -48,22 +48,28 @@ char *createPalindrome(const char *word)
         return NULL;
 
     int len = strlen(word);
-    int adjustment = len % 2 == 0 ? 1 : 0;
-    char *palindrome = (char *)malloc((len * 2) - adjustment + 1);
+    /*
+     * The palindrome should mirror the string without repeating the
+     * last character.  Therefore, only len - 1 characters are appended
+     * to the original word when constructing the palindrome.
+     */
+    char *palindrome = malloc((len * 2) - 1 + 1); /* original + reverse without last + null */
     if (!palindrome)
     {
         perror("Allocation failed");
         exit(EXIT_FAILURE);
     }
 
+    /* Copy the original word */
     memcpy(palindrome, word, len);
 
-    for (int i = 0; i < len - adjustment; i++)
+    /* Append the reverse of the word excluding the last character */
+    for (int i = 0; i < len - 1; ++i)
     {
-        palindrome[len + i] = word[len - i - 1 - adjustment];
+        palindrome[len + i] = word[len - 2 - i];
     }
 
-    palindrome[(len * 2) - adjustment] = '\0';
+    palindrome[(len * 2) - 1] = '\0';
 
     return palindrome;
 }
