@@ -1,5 +1,27 @@
 #include "utilities.h"
 
+ssize_t robustRead(int fd, void *buf, size_t count)
+{
+    ssize_t n = MY_READ(fd, buf, count);
+    if (n < 0)
+    {
+        perror("Read failed");
+        return -1;
+    }
+    return n;
+}
+
+ssize_t robustWrite(int fd, const void *buf, size_t count)
+{
+    ssize_t n = MY_WRITE(fd, buf, count);
+    if (n < 0)
+    {
+        perror("Write failed");
+        return -1;
+    }
+    return n;
+}
+
 char *toggleString(const char *input)
 {
     char *toggledStr = malloc(strlen(input) + 1);
@@ -65,4 +87,23 @@ char *uppercaseOperation(const char *input)
     output[strlen(input)] = '\0';
 
     return output;
+}
+
+int randomMathOperation(int number)
+{
+    int operationNumber = rand() % 10;
+    switch (rand() % 3)
+    {
+    case 0:
+        number += operationNumber;
+        break;
+    case 1:
+        number -= operationNumber;
+        break;
+    case 2:
+        operationNumber = (rand() % 3) + 1;
+        number *= operationNumber;
+        break;
+    }
+    return number;
 }
