@@ -39,6 +39,8 @@ Ensure your project directory is structured properly with `main.c` and `utilitie
 
 This will compile the source files from the `/src` directory and place the executable in the `/build` directory as defined in the Makefile.
 
+Run `make clean` to remove the compiled objects, test binaries, and the executable when you're done experimenting.
+
 ## 📘 How to Play
 
 After compiling, run the executable to access the terminal menu. You may optionally specify the delay (in seconds) as the first argument:
