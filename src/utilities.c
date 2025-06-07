@@ -18,26 +18,6 @@ char *toggleString(const char *input)
     return toggledStr;
 }
 
-int inputValidation(int argc, char *argv[])
-{
-    if (argc != 2)
-    {
-        fprintf(stderr, "Usage: %s <'Your string here'>\n", argv[0]);
-        return EXIT_FAILURE;
-    }
-
-    for (int i = 0; argv[1][i] != '\0'; ++i)
-    {
-        if (isalpha(argv[1][i]))
-        {
-            return 0;
-        }
-    }
-
-    printf("The string you entered does not contain any alphabetical characters.\n");
-    printf("Please run the program again with at least one alphabetical character.\n");
-    return EXIT_FAILURE;
-}
 
 char *createPalindrome(const char *word)
 {
