@@ -39,3 +39,11 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 
 clean:
 	rm -f $(OBJDIR)/*.o $(TARGET)
+
+tests/test_operations: tests/test_operations.c src/utilities.c | build
+	$(CC) $(CFLAGS) -o $@ $^
+
+.PHONY: test
+
+test: tests/test_operations
+	./tests/test_operations

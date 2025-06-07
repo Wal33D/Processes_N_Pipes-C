@@ -67,14 +67,14 @@ int main(int argc, char *argv[])
 
         for (int i = 0; i < PIPE_PAIRS; ++i)
         {
-            if (pipe(fd + (i * 2)) < 0)
+            if (MY_PIPE(fd + (i * 2)) < 0)
             {
                 perror("Pipe initialization failed");
                 exit(EXIT_FAILURE);
             }
         }
 
-        pid = fork();
+        pid = MY_FORK();
         if (pid < 0)
         {
             perror("Failed to fork process");
