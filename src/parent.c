@@ -52,6 +52,9 @@ void parentProcess(int fd[], char *message, Operation choice)
         }
     }
 
+    // No more data will be sent to the child
+    MY_CLOSE(fd[PARENT_WRITE]);
+
     // Wait for and display the modified message or result from the child
     if (choice == OP_RANDOM_MATH)
     {
@@ -79,7 +82,6 @@ void parentProcess(int fd[], char *message, Operation choice)
     }
 
     MY_CLOSE(fd[PARENT_READ]);
-    MY_CLOSE(fd[PARENT_WRITE]);
     // The main function will handle waiting for the child
     // wait(NULL); // Wait for the child process to terminate
 }

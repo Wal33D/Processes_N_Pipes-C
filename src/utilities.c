@@ -1,25 +1,48 @@
 #include "utilities.h"
+#include <errno.h>
 
 ssize_t robustRead(int fd, void *buf, size_t count)
 {
-    ssize_t n = MY_READ(fd, buf, count);
-    if (n < 0)
+    size_t total = 0;
+    char *ptr = buf;
+
+    while (total < count)
     {
-        perror("Read failed");
-        return -1;
+        ssize_t n = MY_READ(fd, ptr + total, count - total);
+        if (n < 0)
+        {
+            if (errno == EINTR)
+                continue;
+            perror("Read failed");
+            return -1;
+        }
+        if (n == 0)
+            break; /* EOF */
+        total += n;
     }
-    return n;
+
+    return (ssize_t)total;
 }
 
 ssize_t robustWrite(int fd, const void *buf, size_t count)
 {
-    ssize_t n = MY_WRITE(fd, buf, count);
-    if (n < 0)
+    size_t total = 0;
+    const char *ptr = buf;
+
+    while (total < count)
     {
-        perror("Write failed");
-        return -1;
+        ssize_t n = MY_WRITE(fd, ptr + total, count - total);
+        if (n <= 0)
+        {
+            if (n < 0 && errno == EINTR)
+                continue;
+            perror("Write failed");
+            return -1;
+        }
+        total += n;
     }
-    return n;
+
+    return (ssize_t)total;
 }
 
 char *toggleString(const char *input)
