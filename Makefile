@@ -9,7 +9,7 @@ SRCDIR = src
 BUILDDIR = build
 OBJDIR = $(BUILDDIR)/object
 
-.PHONY: build $(OBJDIR)
+.PHONY: build $(OBJDIR) clean
 
 # Define the C source files (wildcard picks all .c files in the directory)
 SOURCES = $(wildcard $(SRCDIR)/*.c)
@@ -39,11 +39,14 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 
 clean:
 	rm -f $(OBJDIR)/*.o $(TARGET)
-
 tests/test_operations: tests/test_operations.c src/utilities.c | build
 	$(CC) $(CFLAGS) -o $@ $^
 
+tests/test_menu: tests/test_menu.c | build $(TARGET)
+	$(CC) $(CFLAGS) -o $@ tests/test_menu.c
+
 .PHONY: test
 
-test: tests/test_operations
+test: $(TARGET) tests/test_operations tests/test_menu
 	./tests/test_operations
+	./tests/test_menu

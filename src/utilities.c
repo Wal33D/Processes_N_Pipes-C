@@ -24,18 +24,19 @@ ssize_t robustWrite(int fd, const void *buf, size_t count)
 
 char *toggleString(const char *input)
 {
-    char *toggledStr = malloc(strlen(input) + 1);
+    size_t len = strlen(input);
+    char *toggledStr = malloc(len + 1);
     if (!toggledStr)
     {
         perror("Allocation failed");
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; input[i] != '\0'; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
-        toggledStr[i] = islower(input[i]) ? toupper(input[i]) : tolower(input[i]);
+        toggledStr[i] = islower((unsigned char)input[i]) ? toupper((unsigned char)input[i]) : tolower((unsigned char)input[i]);
     }
-    toggledStr[strlen(input)] = '\0';
+    toggledStr[len] = '\0';
 
     return toggledStr;
 }
@@ -72,19 +73,20 @@ char *uppercaseOperation(const char *input)
     if (input == NULL)
         return NULL;
 
-    char *output = malloc(strlen(input) + 1);
+    size_t len = strlen(input);
+    char *output = malloc(len + 1);
     if (!output)
     {
         perror("Allocation failed");
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; input[i] != '\0'; ++i)
+    for (size_t i = 0; i < len; ++i)
     {
-        output[i] = toupper(input[i]);
+        output[i] = toupper((unsigned char)input[i]);
     }
 
-    output[strlen(input)] = '\0';
+    output[len] = '\0';
 
     return output;
 }

@@ -1,11 +1,11 @@
 #include "utilities.h"
 
-void childProcess(int fd[], int choice)
+void childProcess(int fd[], Operation choice)
 {
     // Close unused ends of the pipes
     MY_CLOSE(fd[PARENT_READ]);
     MY_CLOSE(fd[PARENT_WRITE]);
-    if (choice == 4)
+    if (choice == OP_RANDOM_MATH)
     {
         // Handling a random math operation
         int number;
@@ -27,7 +27,7 @@ void childProcess(int fd[], int choice)
     else
     {
         // First, read the operation code
-        int opCode;
+        Operation opCode;
         MY_SLEEP(delaySeconds);
         if (robustRead(fd[CHILD_READ], &opCode, sizeof(opCode)) < 0)
             exit(EXIT_FAILURE);
@@ -42,15 +42,15 @@ void childProcess(int fd[], int choice)
         // Enthusiastically accepting the task
         switch (opCode)
         {
-        case 1: // Toggle case
+        case OP_TOGGLE:
             printf(COLOR_CYAN "Child giggles: " COLOR_RESET "Oh, I love playing with case! Watch this!\n");
             modifiedMessage = toggleString(buffer);
             break;
-        case 2: // Uppercase
+        case OP_UPPERCASE:
             printf(COLOR_CYAN "Child shouts: " COLOR_RESET "I'll shout this back, louder and prouder!\n");
             modifiedMessage = uppercaseOperation(buffer);
             break;
-        case 3: // Create Palindrome
+        case OP_PALINDROME:
             printf(COLOR_CYAN "Child muses: " COLOR_RESET "Mirroring is fun, let's make a palindrome!\n");
             modifiedMessage = createPalindrome(buffer);
             break;

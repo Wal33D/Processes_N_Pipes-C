@@ -83,24 +83,27 @@ int main(int argc, char *argv[])
 
         if (pid == 0)
         {
-            childProcess(fd, choice);
+            childProcess(fd, (Operation)choice);
             exit(0);
         }
         else
         {
-            if (choice == 4)
+            if (choice == OP_RANDOM_MATH)
             {
                 int number;
                 printf(COLOR_GREEN "Parent asks: " COLOR_RESET "Enter a number: ");
                 scanf("%d", &number);
-                parentProcess(fd, (char *)&number, choice);
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF)
+                    ;
+                parentProcess(fd, (char *)&number, (Operation)choice);
             }
             else
             {
                 printf(COLOR_GREEN "Parent asks: " COLOR_RESET "Enter your message: ");
                 fgets(message, sizeof(message), stdin);
                 message[strcspn(message, "\n")] = 0;
-                parentProcess(fd, message, choice);
+                parentProcess(fd, message, (Operation)choice);
             }
             wait(NULL);
         }
