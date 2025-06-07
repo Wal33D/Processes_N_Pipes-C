@@ -1,6 +1,6 @@
 # 🔄 Processes-N-Pipes: Enhanced IPC Demo with Delays
 
-Welcome to **Processes-N-Pipes**, an advanced exploration into the realms of inter-process communication (IPC) using pipes, now featuring a user-friendly terminal menu and customizable communication delays. This toolkit extends our initial case inversion example to include a variety of operations and demonstrates the effect of delays in IPC, making it a comprehensive educational tool for learners and educators alike.
+Welcome to **Processes-N-Pipes**, an advanced exploration into the realms of inter-process communication (IPC) using pipes. It now features a user-friendly terminal menu and customizable communication delays. This toolkit extends our initial case inversion example to include a variety of operations and demonstrates the effect of delays in IPC, making it a comprehensive educational tool for learners and educators alike.
 
 ## 🎯 Core Functionality
 
@@ -20,23 +20,22 @@ Prepare for this IPC journey with:
 
 ### Installation & Compilation
 
-Ensure your project directory is structured properly with `main.c` and `utilities.c` inside the `/src` folder, and `utilities.h` inside the `/include` folder.
+Ensure your project directory is structured properly with `main.c` and `utilities.c` inside the `/src` folder and `utilities.h` inside the `/include` folder.
 
-1. **Clone this repository**:
+1. **Clone this repository:**
+   ```bash
+   git clone https://github.com/your-username/Processes-N-Pipes.git
+   ```
 
-    \`\`\`bash
-    git clone https://github.com/your-username/Processes-N-Pipes.git
-    \`\`\`
+2. **Navigate to the project directory:**
+   ```bash
+   cd Processes-N-Pipes
+   ```
 
-2. **Navigate to the project directory**:
-    \`\`\`bash
-    cd Processes-N-Pipes
-    \`\`\`
-
-3. **Compile the project using the Makefile**:
-    \`\`\`bash
-    make
-    \`\`\`
+3. **Compile the project using the Makefile:**
+   ```bash
+   make
+   ```
 
 This will compile the source files from the `/src` directory and place the executable in the `/build` directory as defined in the Makefile.
 
@@ -44,8 +43,9 @@ This will compile the source files from the `/src` directory and place the execu
 
 After compiling, run the executable to access the terminal menu. You may optionally specify the delay (in seconds) as the first argument:
 
+```bash
 ./build/processes-n-pipes [delay]
-
+```
 
 Follow the on-screen prompts to choose between various IPC demonstrations. When prompted, enter a message or a number based on your selection. Explore different functionalities and observe the impact of communication delays firsthand.
 
@@ -62,7 +62,7 @@ Additionally, communications are delayed by default to better highlight process 
 
 ## 💡 Contribute & Learn
 
-Dive into the Processes-N-Pipes project! Your contributions, whether they're new features, bug fixes, or documentation improvements, are a fantastic way to deepen your understanding of IPC and contribute to the learning community.
+Dive into the Processes-N-Pipes project! Your contributions—whether new features, bug fixes, or documentation improvements—are a fantastic way to deepen your understanding of IPC and contribute to the learning community.
 
 ## 📜 License
 
