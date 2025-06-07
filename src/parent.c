@@ -79,5 +79,6 @@ void parentProcess(int fd[], char *message, int choice)
 
     close(fd[PARENT_READ]);
     close(fd[PARENT_WRITE]);
-    wait(NULL); // Wait for the child process to terminate
+    // The main function will handle waiting for the child
+    // wait(NULL); // Wait for the child process to terminate
 }
