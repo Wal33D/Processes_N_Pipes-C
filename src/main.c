@@ -11,14 +11,16 @@ int main(int argc, char *argv[])
     // Allow optional command line argument to set the delay
     if (argc >= 2)
     {
-        int val = atoi(argv[1]);
-        if (val >= 0)
+        char *endptr = NULL;
+        long val = strtol(argv[1], &endptr, 10);
+
+        if (*argv[1] != '\0' && *endptr == '\0' && val >= 0)
         {
-            delaySeconds = val;
+            delaySeconds = (int)val;
         }
         else
         {
-            fprintf(stderr, "Invalid delay specified. Using default of %d seconds.\n", DEFAULT_DELAY);
+            fprintf(stderr, "Invalid numeric delay. Using default of %d seconds.\n", DEFAULT_DELAY);
         }
     }
 
