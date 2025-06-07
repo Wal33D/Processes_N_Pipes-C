@@ -42,11 +42,15 @@ clean:
 tests/test_operations: tests/test_operations.c src/utilities.c | build
 	$(CC) $(CFLAGS) -o $@ $^
 
+tests/test_io: tests/test_io.c src/utilities.c | build
+	$(CC) $(CFLAGS) -o $@ $^
+
 tests/test_menu: tests/test_menu.c | build $(TARGET)
 	$(CC) $(CFLAGS) -o $@ tests/test_menu.c
 
 .PHONY: test
 
-test: $(TARGET) tests/test_operations tests/test_menu
+test: $(TARGET) tests/test_operations tests/test_menu tests/test_io
 	./tests/test_operations
 	./tests/test_menu
+	./tests/test_io
