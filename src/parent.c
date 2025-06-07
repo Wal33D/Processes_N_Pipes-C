@@ -1,12 +1,19 @@
 #include "utilities.h"
 
+/*
+ * parentProcess orchestrates the communication from the parent's perspective.
+ * It sends the user's request down the pipe and waits for the child's reply.
+ */
 void parentProcess(int fd[], char *message, Operation choice)
 {
-    // Close unused ends of the pipes
+    /* the parent only writes to the child and reads the response */
     MY_CLOSE(fd[CHILD_READ]);
     MY_CLOSE(fd[CHILD_WRITE]);
 
-    // A playful message for sending the operation to the child
+    /*
+     * Show the user what will be sent to the child.  The colourful text makes
+     * it easy to follow which process is speaking.
+     */
     switch (choice)
     {
     case OP_TOGGLE:
@@ -32,7 +39,7 @@ void parentProcess(int fd[], char *message, Operation choice)
     }
     MY_SLEEP(delaySeconds);
 
-    // Send the operation code to the child
+    /* send the operation code so the child knows how to interpret the data */
     fprintf(stderr, COLOR_WHITE "Parent: " COLOR_RESET "Sending Message to Child Process...\n");
 
     if (robustWrite(fd[PARENT_WRITE], &choice, sizeof(choice)) != sizeof(choice))
@@ -43,7 +50,7 @@ void parentProcess(int fd[], char *message, Operation choice)
 
     if (choice != OP_RANDOM_MATH)
     {
-        // Send the message for string operations
+        /* send the text the user entered for the child to process */
         MY_SLEEP(delaySeconds);
         if (robustWrite(fd[PARENT_WRITE], message, strlen(message) + 1) != (ssize_t)(strlen(message) + 1))
         {
@@ -52,12 +59,13 @@ void parentProcess(int fd[], char *message, Operation choice)
         }
     }
 
-    // No more data will be sent to the child
+    /* finished sending information */
     MY_CLOSE(fd[PARENT_WRITE]);
 
     // Wait for and display the modified message or result from the child
     if (choice == OP_RANDOM_MATH)
     {
+        /* child sent back a single integer result */
         int result;
         MY_SLEEP(delaySeconds);
         if (robustRead(fd[PARENT_READ], &result, sizeof(result)) < 0)
@@ -69,6 +77,7 @@ void parentProcess(int fd[], char *message, Operation choice)
     }
     else
     {
+        /* otherwise read back the modified string */
         char buffer[1024];
         MY_SLEEP(delaySeconds);
         int length = robustRead(fd[PARENT_READ], buffer, sizeof(buffer));
@@ -81,6 +90,7 @@ void parentProcess(int fd[], char *message, Operation choice)
         printf(COLOR_GREEN "Parent beams proudly: " COLOR_RESET "Oh, look at what my clever child did! --> '" COLOR_YELLOW "%s" COLOR_RESET "'\n", buffer);
     }
 
+    /* we have our response; close the pipe */
     MY_CLOSE(fd[PARENT_READ]);
     // The main function will handle waiting for the child
     // wait(NULL); // Wait for the child process to terminate

@@ -1,14 +1,26 @@
 #include "utilities.h"
 
-// Global variable definition for delay duration
+/*
+ * Communication delay between the parent and child processes.  This value can
+ * be overridden via the command line to demonstrate how timing affects pipe
+ * based IPC.
+ */
 int delaySeconds = DEFAULT_DELAY;
 
+/*
+ * Entry point of the demo.  Presents a menu to the user, spawns a child
+ * process and showcases several forms of IPC using pipes.
+ */
 int main(int argc, char *argv[])
 {
     int choice;
     char message[1024];
 
-    // Allow optional command line argument to set the delay
+    /*
+     * The first command line argument, if provided, overrides the default
+     * communication delay.  This lets the user experiment with different
+     * timings when running the demo.
+     */
     if (argc >= 2)
     {
         char *endptr = NULL;
@@ -24,6 +36,8 @@ int main(int argc, char *argv[])
         }
     }
 
+    /* Interactive menu loop.  The program continues until the user chooses
+     * the Exit option. */
     do
     {
         printf("\nChoose a Demo:\n\n");
@@ -34,6 +48,7 @@ int main(int argc, char *argv[])
         printf("5. Exit\n");
         char input[8];
         char *endptr;
+        /* keep prompting until we get a valid menu selection */
         do
         {
             printf("\nEnter your choice (1-5): ");
@@ -65,6 +80,7 @@ int main(int argc, char *argv[])
         int fd[2 * PIPE_PAIRS];
         pid_t pid;
 
+        /* create the two pipes used for bi-directional communication */
         for (int i = 0; i < PIPE_PAIRS; ++i)
         {
             if (MY_PIPE(fd + (i * 2)) < 0)
@@ -74,6 +90,7 @@ int main(int argc, char *argv[])
             }
         }
 
+        /* split into parent and child processes */
         pid = MY_FORK();
         if (pid < 0)
         {
@@ -83,11 +100,13 @@ int main(int argc, char *argv[])
 
         if (pid == 0)
         {
+            /* child: perform the requested operation */
             childProcess(fd, (Operation)choice);
             exit(0);
         }
         else
         {
+            /* parent: gather input and send it to the child */
             if (choice == OP_RANDOM_MATH)
             {
                 int number;
@@ -105,6 +124,7 @@ int main(int argc, char *argv[])
                 message[strcspn(message, "\n")] = 0;
                 parentProcess(fd, message, (Operation)choice);
             }
+            /* wait for the child to finish before showing the menu again */
             wait(NULL);
         }
     } while (choice != 5);
