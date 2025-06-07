@@ -62,6 +62,22 @@ This version introduces a terminal menu that allows users to select between diff
 
 Additionally, communications are delayed by default to better highlight process interaction. You can override the default 3‑second pause by providing a delay value on the command line when starting the program.
 
+## 🧪 Running Tests
+
+Run the included unit tests with:
+
+```bash
+make test
+```
+
+When all tests succeed, you will see output similar to:
+
+```
+All tests passed.
+Menu test passed.
+IO test passed.
+```
+
 ## 💡 Contribute & Learn
 
 Dive into the Processes-N-Pipes project! Your contributions—whether new features, bug fixes, or documentation improvements—are a fantastic way to deepen your understanding of IPC and contribute to the learning community.
