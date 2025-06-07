@@ -32,9 +32,29 @@ int main(int argc, char *argv[])
         printf("3. Palindrome and Return a Message\n");
         printf("4. Perform a Random Math Operation on a Number\n");
         printf("5. Exit\n");
-        printf("\nEnter your choice (1-5): ");
-        scanf("%d", &choice);
-        getchar();
+        char input[8];
+        char *endptr;
+        do
+        {
+            printf("\nEnter your choice (1-5): ");
+            if (!fgets(input, sizeof(input), stdin))
+            {
+                fprintf(stderr, "Error reading input.\n");
+                continue;
+            }
+
+            long val = strtol(input, &endptr, 10);
+
+            if (endptr == input || (*endptr != '\n' && *endptr != '\0') || val < 1 || val > 5)
+            {
+                printf("Invalid choice. Please try again.\n");
+            }
+            else
+            {
+                choice = (int)val;
+                break;
+            }
+        } while (1);
 
         if (choice == 5)
         {
