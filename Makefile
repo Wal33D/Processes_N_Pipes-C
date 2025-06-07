@@ -2,7 +2,7 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -Wall -Iinclude
+CFLAGS = -Wall -std=c11 -Iinclude
 
 # Define the source directory, object directory inside build, and target binary directory
 SRCDIR = src
