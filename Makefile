@@ -38,7 +38,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJDIR)/*.o $(TARGET)
+	rm -f $(OBJDIR)/*.o $(TARGET) tests/test_menu tests/test_operations
 tests/test_operations: tests/test_operations.c src/utilities.c | build
 	$(CC) $(CFLAGS) -o $@ $^
 

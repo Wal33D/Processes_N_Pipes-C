@@ -1,2 +1,4 @@
 build/
 *.o
+tests/test_menu
+tests/test_operations
