@@ -1,4 +1,6 @@
 #include "utilities.h"
+
+/* Simple unit tests for the helper functions in utilities.c. */
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>

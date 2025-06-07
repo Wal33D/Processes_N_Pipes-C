@@ -1,4 +1,6 @@
 #include "utilities.h"
+
+/* Test the robustRead and robustWrite helper functions using a pipe. */
 #include <string.h>
 #include <assert.h>
 

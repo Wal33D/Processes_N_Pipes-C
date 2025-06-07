@@ -1,6 +1,9 @@
+#define _GNU_SOURCE /* for popen and pclose prototypes */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+/* Integration test that drives the menu system non-interactively. */
 
 int main(void)
 {

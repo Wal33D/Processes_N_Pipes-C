@@ -1,13 +1,24 @@
 #include "utilities.h"
+
+/*
+ * utilities.c - Helper functions shared by the parent and child.
+ *
+ * This file contains small utility routines for robust I/O, string
+ * manipulation and random math operations.  Comments throughout the
+ * code describe the algorithms used so learners can follow along.
+ */
 #include <errno.h>
 
 ssize_t robustRead(int fd, void *buf, size_t count)
 {
+    /* Keep reading until we either encounter EOF or have read the
+     * requested number of bytes. */
     size_t total = 0;
     char *ptr = buf;
 
     while (total < count)
     {
+        /* Attempt to read the remaining bytes. */
         ssize_t n = MY_READ(fd, ptr + total, count - total);
         if (n < 0)
         {
@@ -26,6 +37,7 @@ ssize_t robustRead(int fd, void *buf, size_t count)
 
 ssize_t robustWrite(int fd, const void *buf, size_t count)
 {
+    /* Repeatedly write until all bytes are sent. */
     size_t total = 0;
     const char *ptr = buf;
 
@@ -47,6 +59,7 @@ ssize_t robustWrite(int fd, const void *buf, size_t count)
 
 char *toggleString(const char *input)
 {
+    /* Allocate space for the toggled output. */
     size_t len = strlen(input);
     char *toggledStr = malloc(len + 1);
     if (!toggledStr)
@@ -57,7 +70,10 @@ char *toggleString(const char *input)
 
     for (size_t i = 0; i < len; ++i)
     {
-        toggledStr[i] = islower((unsigned char)input[i]) ? toupper((unsigned char)input[i]) : tolower((unsigned char)input[i]);
+        /* Flip the case of each character individually. */
+        toggledStr[i] = islower((unsigned char)input[i]) ?
+                            toupper((unsigned char)input[i]) :
+                            tolower((unsigned char)input[i]);
     }
     toggledStr[len] = '\0';
 
@@ -67,6 +83,7 @@ char *toggleString(const char *input)
 
 char *createPalindrome(const char *word)
 {
+    /* Form a palindrome by mirroring the input string. */
     if (word == NULL)
         return NULL;
 
@@ -99,6 +116,7 @@ char *createPalindrome(const char *word)
 
 char *uppercaseOperation(const char *input)
 {
+    /* Convert a string to all uppercase characters. */
     if (input == NULL)
         return NULL;
 
@@ -112,6 +130,7 @@ char *uppercaseOperation(const char *input)
 
     for (size_t i = 0; i < len; ++i)
     {
+        /* toupper expects an unsigned char cast. */
         output[i] = toupper((unsigned char)input[i]);
     }
 
@@ -122,6 +141,7 @@ char *uppercaseOperation(const char *input)
 
 int randomMathOperation(int number)
 {
+    /* Apply one of three random operations to the number. */
     int operationNumber = rand() % 10;
     switch (rand() % 3)
     {

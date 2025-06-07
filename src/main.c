@@ -1,5 +1,16 @@
 #include "utilities.h"
 
+/*
+ * main.c - Entry point for the Processes-N-Pipes demo program.
+ *
+ * The program presents a simple text menu that allows the user to
+ * choose different inter-process communication (IPC) demonstrations.
+ * Depending on the selected option, the parent and child processes
+ * exchange messages through pipes and perform various transformations
+ * or calculations.  Additional comments throughout the code explain
+ * each step so the flow of data can be easily followed.
+ */
+
 // Global variable definition for delay duration
 int delaySeconds = DEFAULT_DELAY;
 
@@ -8,7 +19,12 @@ int main(int argc, char *argv[])
     int choice;
     char message[1024];
 
-    // Allow optional command line argument to set the delay
+    /*
+     * Allow an optional command line argument that specifies the
+     * number of seconds the parent and child will pause before
+     * sending data to one another.  This makes it easy to observe
+     * how the processes behave when communication is delayed.
+     */
     if (argc >= 2)
     {
         char *endptr = NULL;
@@ -26,17 +42,24 @@ int main(int argc, char *argv[])
 
     do
     {
+        /* Display the available demonstrations on each iteration. */
         printf("\nChoose a Demo:\n\n");
         printf("1. Toggle and Return a Message\n");
         printf("2. Uppercase and Return a Message\n");
         printf("3. Palindrome and Return a Message\n");
         printf("4. Perform a Random Math Operation on a Number\n");
         printf("5. Exit\n");
+        /* Read and validate the user's menu selection.  Because fgets
+         * reads a whole line including the trailing newline, we parse
+         * the string using strtol and check for conversion errors.
+         */
         char input[8];
         char *endptr;
         do
         {
             printf("\nEnter your choice (1-5): ");
+            /* Prompt for and read the selection line.  If fgets fails we
+             * simply restart the loop so the user can try again. */
             if (!fgets(input, sizeof(input), stdin))
             {
                 fprintf(stderr, "Error reading input.\n");
@@ -45,6 +68,9 @@ int main(int argc, char *argv[])
 
             long val = strtol(input, &endptr, 10);
 
+            /* strtol provides robust error checking.  endptr will point
+             * to the first invalid character; valid choices are the
+             * integers 1-5. */
             if (endptr == input || (*endptr != '\n' && *endptr != '\0') || val < 1 || val > 5)
             {
                 printf("Invalid choice. Please try again.\n");
@@ -62,6 +88,12 @@ int main(int argc, char *argv[])
             break;
         }
 
+        /*
+         * Set up two pipes: one pair for parent-to-child
+         * communication and one for child-to-parent.  The array
+         * contains four file descriptors as defined by the macros in
+         * utilities.h.
+         */
         int fd[2 * PIPE_PAIRS];
         pid_t pid;
 
@@ -74,6 +106,9 @@ int main(int argc, char *argv[])
             }
         }
 
+        /* Create the child process.  After fork both parent and child
+         * continue executing from this point with different return
+         * values. */
         pid = MY_FORK();
         if (pid < 0)
         {
@@ -83,11 +118,14 @@ int main(int argc, char *argv[])
 
         if (pid == 0)
         {
+            /* Child process: perform the selected operation and
+             * return the result to the parent through the pipes. */
             childProcess(fd, (Operation)choice);
             exit(0);
         }
         else
         {
+            /* Parent process: gather input and forward it to the child. */
             if (choice == OP_RANDOM_MATH)
             {
                 int number;
@@ -105,9 +143,13 @@ int main(int argc, char *argv[])
                 message[strcspn(message, "\n")] = 0;
                 parentProcess(fd, message, (Operation)choice);
             }
+            /* Wait for the child process to finish before showing the menu
+             * again. */
             wait(NULL);
         }
+    /* Loop until the user chooses to exit from the menu. */
     } while (choice != 5);
 
+    /* Successful termination. */
     return 0;
 }
