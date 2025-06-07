@@ -2,3 +2,4 @@ build/
 *.o
 tests/test_menu
 tests/test_operations
+tests/test_io
