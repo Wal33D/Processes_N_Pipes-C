@@ -63,6 +63,15 @@ ssize_t robustRead(int fd, void *buf, size_t count);
  */
 ssize_t robustWrite(int fd, const void *buf, size_t count);
 
+/** Operation codes sent between the parent and child processes. */
+typedef enum
+{
+    OP_TOGGLE = 1,
+    OP_UPPERCASE,
+    OP_PALINDROME,
+    OP_RANDOM_MATH
+} Operation;
+
 // Function declarations
 /**
  * Toggle the case of every character in the input string.
@@ -71,9 +80,9 @@ ssize_t robustWrite(int fd, const void *buf, size_t count);
 char *toggleString(const char *input);
 
 /** Handle the child side of IPC based on the user's menu choice. */
-void childProcess(int fd[], int choice);
+void childProcess(int fd[], Operation choice);
 /** Handle the parent side of IPC based on the user's menu choice. */
-void parentProcess(int fd[], char *message, int choice);
+void parentProcess(int fd[], char *message, Operation choice);
 
 /**
  * Build a palindrome using the provided word.
@@ -90,7 +99,5 @@ char *uppercaseOperation(const char *input);
  * Perform a random math operation on the given number and return the result.
  */
 int randomMathOperation(int number);
-
-typedef char *(*StringOperation)(const char *input);
 
 #endif

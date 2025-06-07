@@ -1,6 +1,6 @@
 #include "utilities.h"
 
-void parentProcess(int fd[], char *message, int choice)
+void parentProcess(int fd[], char *message, Operation choice)
 {
     // Close unused ends of the pipes
     MY_CLOSE(fd[CHILD_READ]);
@@ -9,16 +9,16 @@ void parentProcess(int fd[], char *message, int choice)
     // A playful message for sending the operation to the child
     switch (choice)
     {
-    case 1:
+    case OP_TOGGLE:
         printf(COLOR_GREEN "Parent whispers: " COLOR_RESET "Hey Kiddo, can you " COLOR_YELLOW "toggle" COLOR_RESET " this for me? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
         break;
-    case 2:
+    case OP_UPPERCASE:
         printf(COLOR_GREEN "Parent muses: " COLOR_RESET "Hey Kiddo, could you please " COLOR_YELLOW "shout" COLOR_RESET " this out loud? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
         break;
-    case 3:
+    case OP_PALINDROME:
         printf(COLOR_GREEN "Parent ponders: " COLOR_RESET "Oh, what if we made this " COLOR_YELLOW "mirror" COLOR_RESET " itself? --> '" COLOR_WHITE "%s" COLOR_RESET "'\n", message);
         break;
-    case 4:
+    case OP_RANDOM_MATH:
         // Correctly interpret the message as a pointer to an integer
         int *pNumber = (int *)message;
         printf(COLOR_GREEN "Parent quizzes: " COLOR_RESET "I wonder how we can play with the number " COLOR_YELLOW "%d" COLOR_RESET " today?\n", *pNumber);
@@ -41,7 +41,7 @@ void parentProcess(int fd[], char *message, int choice)
         exit(EXIT_FAILURE);
     }
 
-    if (choice != 4)
+    if (choice != OP_RANDOM_MATH)
     {
         // Send the message for string operations
         MY_SLEEP(delaySeconds);
@@ -53,7 +53,7 @@ void parentProcess(int fd[], char *message, int choice)
     }
 
     // Wait for and display the modified message or result from the child
-    if (choice == 4)
+    if (choice == OP_RANDOM_MATH)
     {
         int result;
         MY_SLEEP(delaySeconds);
